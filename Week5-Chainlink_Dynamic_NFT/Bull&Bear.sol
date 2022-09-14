@@ -30,7 +30,7 @@ contract BullBear is ERC721, ERC721Enumerable, ERC721URIStorage, KeeperCompatibl
     uint256 public s_requestId;
     uint32 public callbackGasLimit = 500000; // set higher as fulfillRandomWords is doing a LOT of heavy lifting.
     uint64 s_subscriptionId; // private.
-    bytes32 keyhash =  0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc; // keyhash, see for Rinkeby https://docs.chain.link/docs/vrf-contracts/#rinkeby-testnet
+    bytes32 keyhash =  0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc; // keyhash, Rinkeby https://docs.chain.link/docs/vrf-contracts/#rinkeby-testnet
     
     /**
     * Use an interval in seconds and a timestamp to slow execution of Upkeep
@@ -74,13 +74,13 @@ contract BullBear is ERC721, ERC721Enumerable, ERC721URIStorage, KeeperCompatibl
     }
 
     function safeMint(address to) public  {
-        // Current counter value will be the minted token's token ID.
+        // Current counter value will be the minted token ID.
         uint256 tokenId = _tokenIdCounter.current();
 
-        // Increment it so next time it's correct when we call .current()
+        // Increment so next time it's correct when we call .current()
         _tokenIdCounter.increment();
 
-        // Mint the token
+        // Mint token
         _safeMint(to, tokenId);
 
         // Default to a bull NFT on token minting.
@@ -92,7 +92,7 @@ contract BullBear is ERC721, ERC721Enumerable, ERC721URIStorage, KeeperCompatibl
          upkeepNeeded = (block.timestamp - lastTimeStamp) > interval;
     }
 
-    // Modified to handle VRF.
+    // to handle VRF.
     function performUpkeep(bytes calldata /* performData */ ) external override {
         //We highly recommend revalidating the upkeep in the performUpkeep function
         if ((block.timestamp - lastTimeStamp) > interval ) {
@@ -137,7 +137,7 @@ contract BullBear is ERC721, ERC721Enumerable, ERC721URIStorage, KeeperCompatibl
     function requestRandomnessForNFTUris() internal {
         require(s_subscriptionId != 0, "Subscription ID not set"); 
 
-        // Will revert if subscription is not set and funded.
+        // Will revert if subscription if is not set and funded.
         s_requestId = COORDINATOR.requestRandomWords(
             keyhash,
             s_subscriptionId, // See https://vrf.chain.link/
